@@ -1,6 +1,6 @@
 #test_main_page страница теста главной страницы
 
-from .first_docs.main_page import MainPage
+from .pages.main_page import MainPage
 
 def test_guest_can_go_to_login_page(browser):
     link = "http://selenium1py.pythonanywhere.com/"

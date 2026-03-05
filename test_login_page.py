@@ -1,6 +1,6 @@
 #test_login_page страница теста страницы логина 
 
-from .first_docs.login_page import LoginPage
+from .pages.login_page import LoginPage
 
 def test_guest_can_see_login_page(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
