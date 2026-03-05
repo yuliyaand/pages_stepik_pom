@@ -33,24 +33,24 @@ def test_guest_can_add_product_to_basket(browser,link):
     page.should_be_success_message(name)
     page.should_be_basket_total(price)
 
-# 4: Проверяем, что сообщения НЕТ сразу после открытия страницы
+# 4 УПАДЕТ (XFAIL). Мы добавили товар -> сообщение появилось -> is_not_element_present выдал False.
+@pytest.mark.xfail(reason="Message appears after adding product to basket")
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com"
+    page = ProductPage(browser, link)
+    page.open()
+    page.add_to_basket()
+    page.should_not_be_success_message()
+
+# 5 ПРОЙДЕТ (PASSED). Мы просто открыли страницу, сообщения еще нет.
 def test_guest_cant_see_success_message(browser):
     link = "http://selenium1py.pythonanywhere.com"
     page = ProductPage(browser, link)
     page.open()
     page.should_not_be_success_message()
 
-# 5: Проверяем, что сообщение НЕ появляется после добавления в корзину (ожидаем провал)
-@pytest.mark.xfail # Помечаем как XFAIL, так как сообщение ДОЛЖНО появиться
-def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
-    link = "http://selenium1py.pythonanywhere.com"
-    page = ProductPage(browser, link)
-    page.open()
-    page.add_to_basket() # Нажимаем кнопку
-    page.should_not_be_success_message()
-
-# 6: Проверяем, что сообщение исчезает со временем
-@pytest.mark.xfail
+# 6 УПАДЕТ (XFAIL). Сообщение само не исчезает через 4 секунды.
+@pytest.mark.xfail(reason="Success message doesn't disappear on its own")
 def test_message_disappeared_after_adding_product_to_basket(browser):
     link = "http://selenium1py.pythonanywhere.com"
     page = ProductPage(browser, link)
