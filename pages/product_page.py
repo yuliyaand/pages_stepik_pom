@@ -1,11 +1,23 @@
+import time
 from .base_page import BasePage
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from .locators import ProductPageLocators
 
 class ProductPage(BasePage):
     def add_to_basket(self):
-        # Находим кнопку и кликаем
-        add_to_basket_btn = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
-        add_to_basket_btn.click()
+        
+        # Ждем, пока кнопка станет доступна для взаимодействия
+        add_to_basket_btn = WebDriverWait(self.browser, 10).until(
+            EC.element_to_be_clickable(ProductPageLocators.ADD_TO_BASKET)
+        )
+        
+        # Скроллим кнопку в ЦЕНТР экрана (чтобы футер не перекрыл её)
+        self.browser.execute_script("arguments[0].scrollIntoView({block: 'center'});", add_to_basket_btn)
+
+        # Кликаем через JS, передавая саму кнопку как аргумент [0]
+        self.browser.execute_script("arguments[0].click();", add_to_basket_btn)
+
         # Вызываем решение уравнения из BasePage
         self.solve_quiz_and_get_code()
 
