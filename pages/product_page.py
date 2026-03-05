@@ -15,6 +15,7 @@ class ProductPage(BasePage):
         # Скроллим кнопку в ЦЕНТР экрана (чтобы футер не перекрыл её)
         self.browser.execute_script("arguments[0].scrollIntoView({block: 'center'});", add_to_basket_btn)
 
+        time.sleep(1)
         # Кликаем через JS, передавая саму кнопку как аргумент [0]
         self.browser.execute_script("arguments[0].click();", add_to_basket_btn)
 
@@ -36,3 +37,11 @@ class ProductPage(BasePage):
         # Проверяем, что цена в алерте совпадает с ценой товара
         total = self.browser.find_element(*ProductPageLocators.MESSAGE_BASKET_TOTAL).text
         assert product_price == total, f"Expected {product_price}, but got {total}"    
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_disappear_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message doesn't disappear"

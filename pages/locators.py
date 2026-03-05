@@ -14,3 +14,4 @@ class ProductPageLocators():
 
     MESSAGE_PRODUCT_NAME = (By.CSS_SELECTOR, "#messages .alert-success:nth-child(1) strong")
     MESSAGE_BASKET_TOTAL = (By.CSS_SELECTOR, "#messages .alert-info strong")
+    SUCCESS_MESSAGE = (By.CSS_SELECTOR, ".alert-success")

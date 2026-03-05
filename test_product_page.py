@@ -17,6 +17,7 @@ from .pages.product_page import ProductPage
 def test_guest_can_add_product_to_basket(browser,link):
     # link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-shellcoders-handbook_209/?promo=newYear"
     # link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+    # link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/coders-at-work_207/reviews/add/"
     page = ProductPage(browser,link) # инициализируем Page Object, 
     #передаем в конструктор экземпляр драйвера и url адрес
     page.open() # открываем страницу
@@ -31,3 +32,28 @@ def test_guest_can_add_product_to_basket(browser,link):
     # 3. Проверяем соответствие
     page.should_be_success_message(name)
     page.should_be_basket_total(price)
+
+# 4: Проверяем, что сообщения НЕТ сразу после открытия страницы
+def test_guest_cant_see_success_message(browser):
+    link = "http://selenium1py.pythonanywhere.com"
+    page = ProductPage(browser, link)
+    page.open()
+    page.should_not_be_success_message()
+
+# 5: Проверяем, что сообщение НЕ появляется после добавления в корзину (ожидаем провал)
+@pytest.mark.xfail # Помечаем как XFAIL, так как сообщение ДОЛЖНО появиться
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com"
+    page = ProductPage(browser, link)
+    page.open()
+    page.add_to_basket() # Нажимаем кнопку
+    page.should_not_be_success_message()
+
+# 6: Проверяем, что сообщение исчезает со временем
+@pytest.mark.xfail
+def test_message_disappeared_after_adding_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com"
+    page = ProductPage(browser, link)
+    page.open()
+    page.add_to_basket()
+    page.should_disappear_success_message()

@@ -42,7 +42,7 @@ class BasePage():
         answer = str(math.log(abs((12 * math.sin(float(x_value))))))
         alert.send_keys(answer)
         alert.accept()
-        
+
         # второй алерт
         try:
             # Уменьшите время ожидания до 5 секунд, чтобы не ждать долго
@@ -53,3 +53,23 @@ class BasePage():
             alert.accept()
         except (NoAlertPresentException, TimeoutException):
             print("Второй алерт не появился, идем дальше.")
+
+# абстрактный метод, который проверяет, что элемент не появляется на 
+# странице в течение заданного времени: 
+    def is_not_element_present(self, how, what, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return True
+
+        return False
+
+
+    def is_disappeared(self, how, what, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).\
+                until_not(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return False
+
+        return True
