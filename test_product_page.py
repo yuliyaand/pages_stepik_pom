@@ -8,4 +8,14 @@ def test_guest_can_add_product_to_basket(browser):
     page = ProductPage(browser,link) # инициализируем Page Object, 
     #передаем в конструктор экземпляр драйвера и url адрес
     page.open() # открываем страницу
-    page.add_to_basket() # выполняем метод страницы — на странице товара нажимаем add to basket b 
+
+    # 1. Запоминаем данные товара ДО добавления
+    name = page.get_product_name()
+    price = page.get_product_price()
+
+    # 2. Добавляем в корзину
+    page.add_to_basket() # выполняем метод страницы — на странице товара нажимаем add to basket
+
+    # 3. Проверяем соответствие
+    page.should_be_success_message(name)
+    page.should_be_basket_total(price)
