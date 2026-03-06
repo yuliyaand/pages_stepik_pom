@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from .locators import ProductPageLocators
 
 class ProductPage(BasePage):
-    def add_to_basket(self):
+    def add_to_basket_with_alert(self):
         
         # Ждем, пока кнопка станет доступна для взаимодействия
         add_to_basket_btn = WebDriverWait(self.browser, 10).until(
@@ -21,6 +21,12 @@ class ProductPage(BasePage):
 
         # Вызываем решение уравнения из BasePage
         self.solve_quiz_and_get_code()
+
+    def add_to_basket_no_alert(self):
+
+        # Находим кнопку и кликаем
+        button = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
+        button.click()
 
     def get_product_name(self):
         return self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
