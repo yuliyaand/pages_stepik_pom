@@ -18,9 +18,19 @@ class BasePage():
         self.url = url
         self.browser.implicitly_wait(timeout)
 
-    def go_to_login_page(self):
-        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK_INVALID)
+    def go_to_basket_page(self):
+        link = self.browser.find_element(*BasePageLocators.BASKET_LINK)
         link.click()
+
+        from .basket_page import BasketPage 
+        return BasketPage(self.browser, self.browser.current_url)
+
+    def go_to_login_page(self):
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        link.click()
+
+        from .login_page import LoginPage 
+        return LoginPage(self.browser, self.browser.current_url)
 
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
